@@ -1,45 +1,41 @@
+#================================================
+#  Basic Configure
+#================================================
 
-#よくわからん
-autoload -U compinit
-compinit
-
-#ディレクトリ名だけでcdできる
-#setopt auto_cd
-
-#タブとか押したときにビープ音が鳴らない
+# ビープ音を鳴らさない
 setopt NO_beep
 
-#スペルチェック
-#setopt correct_all
-
-#最近行ったディレクトリを記憶している
-setopt autopushd
-
-# 直前と同じコマンドをヒストリに追加しない
+# 連続した同じコマンドをヒストリに追加しない
 setopt hist_ignore_dups
 
-#よくわからん
-autoload -U colors
-colors
+# 最近行ったディレクトリを記憶
+setopt autopushd
 
-#エイリアス系
-alias la="ls -a"
-alias lr="ls -R"
-alias ls="ls -F --color"
-alias pd="pwd"
-alias e="emacs"
-alias v="vim"
-
-#よくわからん
-export LANG=ja_JP.UTF-8
-setopt COMPLETE_IN_WORD
-
-#大文字と小文字を区別しない
+# 大文字小文字を区別しない
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-#色は.dir_colors参照
-eval `dircolors ~/.dir_colors -b`
+
+#================================================
+#  Alias
+#================================================
+
+alias ls="ls -F --color"
+alias la="ls -a"
+alias lr="ls -R"
+
+
+#================================================
+#  Color
+#================================================
+
+# .dircolorsの反映
+eval `dircolors ~/.zsh/myconf/.dir_colors -b`
 zstyle ':completion:*:default' list-colors ${LS_COLORS}
+
+
+#================================================
+#  Prompt
+#================================================
 
 # 色
 ######################################
@@ -72,8 +68,19 @@ PROMPT="$CYAN(%n@%m)-(%(!.#.$))-----
 -->"
 RPROMPT="$CYAN [%~]$DEFAULT"
 
-# Ruby gem
-export GEM_HOME=$HOME/local/share/rubygems/gems
-export RUBYLIB=$HOME/local/share/rubygems/lib
-export RB_USER_INSTALL=true
+
+
+
+
+#よくわからん
+autoload -U compinit
+compinit
+
+#よくわからん
+autoload -U colors
+colors
+
+#よくわからん
+export LANG=ja_JP.UTF-8
+setopt COMPLETE_IN_WORD
 
