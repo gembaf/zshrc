@@ -77,6 +77,9 @@ setopt MAGIC_EQUAL_SUBST
 # 補完候補を詰めて表示
 setopt LIST_PACKED
 
+# 候補一覧選択を横進みにする
+setopt LIST_ROWS_FIRST
+
 # 補完候補を色付きで表示
 # .dircolorsの反映
 eval `dircolors ~/.zsh/myconf/.dir_colors -b`
@@ -85,15 +88,16 @@ zstyle ':completion:*:default' list-colors ${LS_COLORS}
 # 補完対象の一覧を上下左右に移動できる
 zstyle ':completion:*:default' menu select=2
 
+
 #=================================================
-#  Command History
+#  History
 #=================================================
 
 # ヒストリファイルの指定
 HISTFILE="$HOME/.zsh_histfile"
 
 # 履歴件数の指定
-HISTSIZE=100000
+HISTSIZE=1000
 SAVEHIST=100000
 
 # 重複した履歴を保存しない
@@ -105,19 +109,14 @@ setopt SHARE_HISTORY
 # 余分な空白を削除して履歴を保存
 setopt HIST_REDUCE_BLANKS
 
-#補完メニュー表示時に'hjkl'で選択
-#zmodload -i zsh/complist
-bindkey -M menuselect \
-  'k' up-line-or-history \
-  '^J' down-line-or-history \
-  'h' backward-char \
-  'l' forward-char
-
+# 入力の途中でもヒストリ検索
 #autoload history-search-end
 #zle -N history-beginning-search-backward-end history-search-end
 #zle -N history-beginning-search-forward-end history-search-end
-#bindkey "^P" history-beginning-search-backward-end
-#bindkey "^N" history-beginning-search-forward-end
+#bindkey -v "^P" history-beginning-search-backward-end
+#bindkey -v "^N" history-beginning-search-forward-end
+#bindkey -a "^P" history-beginning-search-backward-end
+#bindkey -a "^N" history-beginning-search-forward-end
 
 #=================================================
 #  Alias
@@ -214,7 +213,7 @@ bindkey -v '^F^H' backward-char
 # <C-y>でundo
 bindkey -v '^Y' vi-undo-change
 
-# <C-u>でカーソルの左側だけ削除にする
+# <C-u>でカーソルの左側だけ削除する
 bindkey -v '^U' backward-kill-line
 
 # <C-o>で現在の行をコマンドラインスタックに積む
@@ -225,6 +224,23 @@ bindkey -v 'jj' vi-cmd-mode
 
 # <C-n>で補完開始
 bindkey -v '^N' expand-or-complete
+
+# 補完メニュー表示時に'hjkl'で選択
+# <C-p>で補完バック
+zmodload -i zsh/complist
+bindkey -M menuselect \
+  '^P' up-line-or-history \
+  'k' up-line-or-history \
+  '^J' down-line-or-history \
+  'j' down-line-or-history \
+  'h' backward-char \
+  'l' forward-char
+
+# <C-k>で補完確定
+bindkey -v '^K' accept-line
+
+# <C-d>でDeleteキーと同じ動き
+bindkey -v '^D' vi-delete-char
 
 #------------------------------------------------
 #  Normal(Command) Mode
