@@ -2,6 +2,12 @@
 #  Basic Configure
 #=================================================
 
+# viモード
+bindkey -v
+
+# エディタの設定
+export EDITOR=vim
+
 # 言語・文字コード設定
 export LANG=ja_JP.UTF-8
 
@@ -53,6 +59,12 @@ autoload -U compinit && compinit
 # 補完機能の拡張
 setopt EXTENDED_GLOB
 
+# TAB1回でリスト表示
+setopt AUTO_LIST
+
+# TAB連打でメニュー表示
+setopt AUTO_MENU
+
 # ドットファイルも対象に含める
 setopt GLOBDOTS
 
@@ -93,6 +105,14 @@ setopt SHARE_HISTORY
 # 余分な空白を削除して履歴を保存
 setopt HIST_REDUCE_BLANKS
 
+#補完メニュー表示時に'hjkl'で選択
+#zmodload -i zsh/complist
+bindkey -M menuselect \
+  'k' up-line-or-history \
+  '^J' down-line-or-history \
+  'h' backward-char \
+  'l' forward-char
+
 #autoload history-search-end
 #zle -N history-beginning-search-backward-end history-search-end
 #zle -N history-beginning-search-forward-end history-search-end
@@ -104,7 +124,9 @@ setopt HIST_REDUCE_BLANKS
 #=================================================
 
 alias ls="ls -F --color"
+alias ll="ls -l"
 alias la="ls -a"
+alias lla="ls -al"
 alias lr="ls -R"
 
 #=================================================
@@ -114,10 +136,22 @@ alias lr="ls -R"
 # プロンプトが表示されるたびにプロンプト文字列を評価、置換する
 setopt PROMPT_SUBST
 
+# コマンド実行後に右プロンプトを消す
+#setopt TRANSIENT_RPROMPT
+
 # VCS_INFOの使用
 autoload -Uz VCS_INFO_get_data_git && VCS_INFO_get_data_git 2> /dev/null
 
-# branch名の取得
+PROMPT_USER='${CYAN_B}[${MAGENTA_B}%n${YELLOW_B}@${BLUE_B}%m${CYAN_B}]$RESET'
+PROMPT_GIT='`git-current-branch`'
+PROMPT_DIR='${CYAN_B}['${PROMPT_GIT}'${GREEN_B}%~${CYAN_B}]${RESET}'
+PROMPT_ROLE='${CYAN_B} %(!.#.$) >$RESET'
+
+PROMPT="${PROMPT_USER}${PROMPT_DIR}"$'\n'"[${RED_B}Ins${RESET}]${PROMPT_ROLE}"
+
+#------------------------------------------------
+#  branch名の取得
+#------------------------------------------------
 function git-current-branch {
   local name st color gitdir action
   if [[ "$PWD" =~ '/\.git(/.*)?$' ]]; then
@@ -141,14 +175,73 @@ function git-current-branch {
   else
     color=$RED
   fi
-  echo "[$color$name$action$RESET]$CYAN--$RESET"
+  echo "$color$name$action $RESET"
 }
 
-p_info='$CYAN(%n@%m)--$RESET'
-p_git='`git-current-branch`'
-p_under='$CYAN%(!.#.$) > $RESET'
+#------------------------------------------------
+#  viのモードの取得
+#  PROMPTのセット
+#------------------------------------------------
+function zle-line-init zle-keymap-select {
+  PROMPT="${PROMPT_USER}${PROMPT_DIR}"$'\n'
 
-PROMPT=$p_info$p_git$'\n'$p_under
-RPROMPT='$GREEN [%~]$RESET'
+  case $KEYMAP in
+    vicmd)
+      PROMPT="${PROMPT}[${BLUE_B}Nor${RESET}]"
+      ;;
+    main|viins)
+      PROMPT="${PROMPT}[${RED_B}Ins${RESET}]"
+      ;;
+  esac
+  PROMPT="${PROMPT}${PROMPT_ROLE}"
+  zle reset-prompt
+}
+zle -N zle-line-init
+zle -N zle-keymap-select
+
+#=================================================
+#  Vim Keybind
+#=================================================
+
+#------------------------------------------------
+#  Insert Mode
+#------------------------------------------------
+
+# 1文字移動
+bindkey -v '^F^L' forward-char
+bindkey -v '^F^H' backward-char
+
+# <C-y>でundo
+bindkey -v '^Y' vi-undo-change
+
+# <C-u>でカーソルの左側だけ削除にする
+bindkey -v '^U' backward-kill-line
+
+# <C-o>で現在の行をコマンドラインスタックに積む
+bindkey -v '^O' push-line
+
+# jjでNormalモード
+bindkey -v 'jj' vi-cmd-mode
+
+# <C-n>で補完開始
+bindkey -v '^N' expand-or-complete
+
+#------------------------------------------------
+#  Normal(Command) Mode
+#------------------------------------------------
+#<C-o>で現在の行をコマンドラインスタックに積む
+bindkey -a '^O' push-line
+
+# Normalモード時に<C-m>で<CR>+Insert_modeに移行
+vicmd_accept-line(){
+  zle accept-line
+  zle vi-insert
+}
+zle -N vicmd_accept-line
+bindkey -a '^M' vicmd_accept-line
+
+
+
+
 
 
