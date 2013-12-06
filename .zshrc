@@ -2,10 +2,6 @@
 #  Basic Configure
 #=================================================
 
-# 色設定
-# $fg[色名]/$bg[色名]$reset_color で色表示
-autoload -U colors && colors
-
 # 言語・文字コード設定
 export LANG=ja_JP.UTF-8
 
@@ -15,14 +11,37 @@ setopt NO_BEEP
 # 最近行ったディレクトリを記憶
 setopt AUTO_PUSHD
 
-# リンクへ移動するとき実際のディレクトリへ移動
-setopt CHASE_LINKS
-
 # pushdの履歴を残さない
 setopt PUSHD_IGNORE_DUPS
 
+# リンクへ移動するとき実際のディレクトリへ移動
+setopt CHASE_LINKS
+
 # 大文字小文字を区別しない
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+#=================================================
+#  Color
+#=================================================
+
+# 色設定
+# $fg[色名]/$bg[色名]$reset_color で色表示
+autoload -U colors && colors
+
+# 色定数
+GREEN="%{$fg[green]%}"
+GREEN_B="%{$fg_bold[green]%}"
+BLUE="%{$fg[blue]%}"
+BLUE_B="%{$fg_bold[blue]%}"
+RED="%{$fg[red]%}"
+RED_B="%{$fg_bold[red]%}"
+CYAN="%{$fg[cyan]%}"
+CYAN_B="%{$fg_bold[cyan]%}"
+YELLOW="%{$fg[yellow]%}"
+YELLOW_B="%{$fg_bold[yellow]%}"
+MAGENTA="%{$fg[magenta]%}"
+MAGENTA_B="%{$fg_bold[magenta]%}"
+RESET="%{$reset_color%}"
 
 #=================================================
 #  Complement
@@ -89,18 +108,6 @@ alias la="ls -a"
 alias lr="ls -R"
 
 #=================================================
-#  Color
-#=================================================
-
-# 色定数
-GREEN="%{$fg[green]%}"
-RED="%{$fg[red]%}"
-RED_BOLD="%{%B$fg[red]%}"
-CYAN="%{$fg[cyan]%}"
-YELLOW="%{$fg[yellow]%}"
-MAGENTA="%{$fg[magenta]%}"
-
-#=================================================
 #  Prompt
 #=================================================
 
@@ -130,18 +137,18 @@ function git-current-branch {
   elif [[ -n `echo "$st" | grep "^nothing added"` ]]; then
     color=$YELLOW
   elif [[ -n `echo "$st" | grep "^# Untracked"` ]]; then
-    color=$RED_BOLD
+    color=$RED_B
   else
     color=$RED
   fi
-  echo "[$color$name$action%{$reset_color%}]$CYAN--%{$reset_color%}"
+  echo "[$color$name$action$RESET]$CYAN--$RESET"
 }
 
-p_info='$CYAN(%n@%m)--%{$reset_color%}'
+p_info='$CYAN(%n@%m)--$RESET'
 p_git='`git-current-branch`'
-p_under='$CYAN%(!.#.$) > %{$reset_color%}'
+p_under='$CYAN%(!.#.$) > $RESET'
 
 PROMPT=$p_info$p_git$'\n'$p_under
-RPROMPT='$GREEN [%~]%{$reset_color%}'
+RPROMPT='$GREEN [%~]$RESET'
 
 
