@@ -141,11 +141,12 @@ setopt PROMPT_SUBST
 # VCS_INFOの使用
 autoload -Uz VCS_INFO_get_data_git && VCS_INFO_get_data_git 2> /dev/null
 
-PROMPT_USER='${CYAN_B}[${MAGENTA_B}%n${YELLOW_B}@${BLUE_B}%m${CYAN_B}]$RESET'
+PROMPT_USER='${CYAN_B}[${RESET}${MAGENTA_B}%n${RESET}${YELLOW_B}@${RESET}${BLUE_B}%m${RESET}${CYAN_B}]$RESET'
 PROMPT_GIT='`git-current-branch`'
-PROMPT_DIR='${CYAN_B}['${PROMPT_GIT}'${GREEN_B}%~${CYAN_B}]${RESET}'
-PROMPT_ROLE='${CYAN_B} %(!.#.$) >$RESET'
+PROMPT_DIR='${CYAN_B}[${RESET}'${PROMPT_GIT}'${GREEN_B}%~${RESET}${CYAN_B}]${RESET}'
+PROMPT_ROLE='${CYAN_B} %(!.#.$) >${RESET}'
 
+# 初期プロンプト
 PROMPT="${PROMPT_USER}${PROMPT_DIR}"$'\n'"[${RED_B}Ins${RESET}]${PROMPT_ROLE}"
 
 #------------------------------------------------
@@ -166,15 +167,15 @@ function git-current-branch {
 
   st=`git status 2> /dev/null`
   if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
-    color=$GREEN
+    color=${GREEN}
   elif [[ -n `echo "$st" | grep "^nothing added"` ]]; then
-    color=$YELLOW
+    color=${YELLOW}
   elif [[ -n `echo "$st" | grep "^# Untracked"` ]]; then
-    color=$RED_B
+    color=${RED_B}
   else
-    color=$RED
+    color=${RED}
   fi
-  echo "$color$name$action $RESET"
+  echo "${color}${name}${action} ${RESET}"
 }
 
 #------------------------------------------------
