@@ -127,6 +127,11 @@ alias ll="ls -l"
 alias la="ls -a"
 alias lla="ls -al"
 alias lr="ls -R"
+alias gst="git status"
+alias gch="git checkout"
+alias gbr="git branch"
+alias glg="git log --graph --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%C(yellow)%d%Creset' --abbrev-commit --date=relative"
+alias gla="git log --graph --all --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%C(yellow)%d%Creset' --abbrev-commit --date=relative"
 
 #=================================================
 #  Prompt
