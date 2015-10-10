@@ -139,6 +139,9 @@ alias glg="git log --graph --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(
 alias gad="git add"
 alias gco="git commit"
 alias gpu="git push"
+alias gpl="git pull"
+alias gdi="git diff"
+alias be="bundle exec"
 
 #=================================================
 #  Prompt
