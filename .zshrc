@@ -142,6 +142,9 @@ alias gpu="git push"
 alias gpl="git pull"
 alias gdi="git diff"
 alias be="bundle exec"
+alias beu="bundle exec rubocop"
+alias bes="bundle exec rspec"
+alias bea="bundle exec rubocop; bundle exec rspec"
 
 #=================================================
 #  Prompt
