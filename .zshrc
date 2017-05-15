@@ -80,11 +80,6 @@ setopt LIST_PACKED
 # 候補一覧選択を横進みにする
 setopt LIST_ROWS_FIRST
 
-# 補完候補を色付きで表示
-# .dircolorsの反映
-eval `dircolors ~/.zsh/myconf/.dir_colors -b`
-zstyle ':completion:*:default' list-colors ${LS_COLORS}
-
 # 補完対象の一覧を上下左右に移動できる
 zstyle ':completion:*:default' menu select=2
 
@@ -122,7 +117,16 @@ setopt HIST_REDUCE_BLANKS
 #  Alias
 #=================================================
 
-alias ls="ls -F --color"
+if [ $(uname) = "Darwin" ]; then
+  alias ls="ls -GF"
+elif [ $(uname) = "Linux" ]; then
+  alias ls="ls -F --color"
+  # 補完候補を色付きで表示
+  # .dircolorsの反映
+  eval `dircolors ~/.zsh/myconf/.dir_colors -b`
+  zstyle ':completion:*:default' list-colors ${LS_COLORS}
+fi
+
 alias ll="ls -l"
 alias la="ls -a"
 alias lla="ls -al"
