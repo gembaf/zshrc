@@ -150,6 +150,10 @@ alias be="bundle exec"
 alias beu="bundle exec rubocop"
 alias bes="bundle exec rspec"
 alias bea="bundle exec rubocop; bundle exec rspec"
+alias brails="bin/rails"
+alias brake="bin/rake"
+alias bbundle="bin/bundle"
+alias brspec="bin/rspec"
 
 #=================================================
 #  Prompt
