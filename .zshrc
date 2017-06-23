@@ -2,6 +2,9 @@
 #  Basic Configure
 #=================================================
 
+# パス読み込み
+export PATH="$HOME/.zsh/bin:$PATH"
+
 # viモード
 bindkey -v
 
