@@ -2,6 +2,9 @@
 #  Basic Configure
 #=================================================
 
+# パス読み込み
+export PATH="$HOME/.zsh/bin:$PATH"
+
 # viモード
 bindkey -v
 
@@ -25,6 +28,18 @@ setopt CHASE_LINKS
 
 # 大文字小文字を区別しない
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+agent="$HOME/.ssh/agent"
+if [ -S "$SSH_AUTH_SOCK" ]; then
+  case $SSH_AUTH_SOCK in
+    /tmp/*/agent.[0-9]*)
+      ln -snf "$SSH_AUTH_SOCK" $agent && export SSH_AUTH_SOCK=$agent
+  esac
+elif [ -S $agent ]; then
+  export SSH_AUTH_SOCK=$agent
+else
+  echo "no ssh-agent"
+fi
 
 #=================================================
 #  Color
@@ -150,6 +165,10 @@ alias be="bundle exec"
 alias beu="bundle exec rubocop"
 alias bes="bundle exec rspec"
 alias bea="bundle exec rubocop; bundle exec rspec"
+alias brails="bin/rails"
+alias brake="bin/rake"
+alias bbundle="bin/bundle"
+alias brspec="bin/rspec"
 
 #=================================================
 #  Prompt
