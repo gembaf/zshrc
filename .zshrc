@@ -180,7 +180,7 @@ function git-current-branch {
   if [[ "$PWD" =~ '/\.git(/.*)?$' ]]; then
     return
   fi
-  name=$(basename "`git symbolic-ref HEAD 2> /dev/null`")
+  name=`git symbolic-ref HEAD | sed -e 's/refs\/heads\///' 2> /dev/null`
   if [[ -z $name ]]; then
     return
   fi
