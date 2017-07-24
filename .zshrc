@@ -199,10 +199,11 @@ function git-current-branch {
   if [[ "$PWD" =~ '/\.git(/.*)?$' ]]; then
     return
   fi
-  name=`git symbolic-ref HEAD | sed -e 's/refs\/heads\///' 2> /dev/null`
+  name=`git symbolic-ref HEAD 2> /dev/null`
   if [[ -z $name ]]; then
     return
   fi
+  name=`echo $name | sed -e 's/refs\/heads\///'`
 
   gitdir=`git rev-parse --git-dir 2> /dev/null`
   action=`VCS_INFO_git_getaction "$gitdir"` && action="($action)"
