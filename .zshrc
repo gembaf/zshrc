@@ -142,6 +142,10 @@ elif [ $(uname) = "Linux" ]; then
   zstyle ':completion:*:default' list-colors ${LS_COLORS}
 fi
 
+alias ls="ls -F --color"
+eval `dircolors ~/.zsh/myconf/.dir_colors -b`
+zstyle ':completion:*:default' list-colors ${LS_COLORS}
+
 alias ll="ls -l"
 alias la="ls -a"
 alias lla="ls -al"
