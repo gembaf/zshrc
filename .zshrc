@@ -132,17 +132,15 @@ setopt HIST_REDUCE_BLANKS
 #  Alias
 #=================================================
 
+# Mac 上で動作させる場合は以下のコマンドで coreutils をインストールする必要がある
+# brew install coreutils
 if [ $(uname) = "Darwin" ]; then
-  alias ls="ls -GF"
-elif [ $(uname) = "Linux" ]; then
-  alias ls="ls -F --color"
-  # 補完候補を色付きで表示
-  # .dircolorsの反映
-  eval `dircolors ~/.zsh/myconf/.dir_colors -b`
-  zstyle ':completion:*:default' list-colors ${LS_COLORS}
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 fi
 
+# 補完候補を色付きで表示
 alias ls="ls -F --color"
+# .dircolorsの反映
 eval `dircolors ~/.zsh/myconf/.dir_colors -b`
 zstyle ':completion:*:default' list-colors ${LS_COLORS}
 
