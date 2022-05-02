@@ -113,6 +113,9 @@ SAVEHIST=100000
 # 重複した履歴を保存しない
 setopt HIST_IGNORE_DUPS
 
+# 先頭に半角スペースを入れてコマンドを実行した場合は履歴に残さない
+setopt HIST_IGNORE_SPACE
+
 # 履歴を共有
 setopt SHARE_HISTORY
 
