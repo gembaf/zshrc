@@ -144,7 +144,11 @@ fi
 # 補完候補を色付きで表示
 alias ls="ls -F --color"
 # .dircolorsの反映
-eval `dircolors ~/.zsh/myconf/.dir_colors -b`
+if type dircolors > /dev/null 2>&1; then
+    eval `dircolors ~/.zsh/myconf/.dir_colors -b`
+elif type gdircolors > /dev/null 2>&1; then
+    eval `gdircolors ~/.zsh/myconf/.dir_colors -b`
+fi
 zstyle ':completion:*:default' list-colors ${LS_COLORS}
 
 alias ll="ls -l"
